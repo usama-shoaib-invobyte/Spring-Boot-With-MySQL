@@ -42,4 +42,28 @@ public class EmployeeServiceImplentation implements EmployeeService{
         return employeeDao.findById(id).orElseThrow(()->
                 new ResourceNotFoundException("Employee","Id",id));
     }
+
+    @Override
+    public Employee updateEmployee(Employee employee, long id) {
+        Employee existingEmployee = employeeDao.findById(id).orElseThrow(()->
+                new ResourceNotFoundException("Employee","id",id));
+
+        existingEmployee.setFirstName(employee.getFirstName());
+        existingEmployee.setLastName(employee.getLastName());
+        existingEmployee.setEmail(employee.getEmail());
+
+        employeeDao.save(existingEmployee);
+        return existingEmployee;
+
+    }
+
+    @Override
+    public void deleteEmployee(long id) {
+        //see whether employee exists in db or not
+        employeeDao.findById(id).orElseThrow(()->
+                new ResourceNotFoundException("Employee","id",id));
+
+
+        employeeDao.deleteById(id);
+    }
 }
